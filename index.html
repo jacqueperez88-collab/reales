@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemática General - Inecuaciones, Valor Absoluto y Ecuaciones</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #dfe6e9 50%, #a8e6cf 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white; padding: 40px 20px; border-radius: 20px;
+            text-align: center; margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        header p { font-size: 1.2em; opacity: 0.95; }
+        .nav-menu { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; }
+        .nav-button {
+            background: linear-gradient(135deg, #74b9ff, #a29bfe); color: white;
+            padding: 15px 25px; border: none; border-radius: 50px; cursor: pointer;
+            font-size: 1em; font-weight: bold; transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .nav-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .section {
+            background: white; border-radius: 20px; padding: 40px;
+            margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: none;
+        }
+        .section.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .section h2 { color: #6c5ce7; margin-bottom: 20px; font-size: 2em; border-bottom: 3px solid #fdcb6e; padding-bottom: 10px; }
+        .subsection {
+            background: linear-gradient(135deg, #fff5e6, #ffe6f0);
+            padding: 25px; border-radius: 15px; margin-bottom: 25px; border-left: 5px solid #fd79a8;
+        }
+        .subsection h3 { color: #e17055; margin-bottom: 15px; font-size: 1.5em; }
+        .theory-box {
+            background: #e8f4f8; padding: 20px; border-radius: 10px;
+            margin: 15px 0; border-left: 4px solid #0984e3;
+        }
+        .theory-box strong { color: #2d3436; }
+        .property-box {
+            background: #fff3cd; padding: 20px; border-radius: 10px;
+            margin: 15px 0; border-left: 4px solid #ffc107;
+        }
+        .exercise-container {
+            background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+            padding: 30px; border-radius: 15px; margin: 20px 0;
+        }
+        .exercise-container h3 { color: #2d3436; margin-bottom: 20px; font-size: 1.4em; }
+        .exercise-item {
+            background: white; padding: 20px; margin: 15px 0;
+            border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .exercise-item strong { color: #6c5ce7; display: block; margin-bottom: 10px; }
+        .exercise-item .problem {
+            color: #2d3436; font-size: 1.1em; margin-bottom: 15px;
+            padding: 10px; background: #f8f9fa; border-radius: 5px;
+        }
+        .solution-toggle {
+            background: linear-gradient(135deg, #00b894, #00cec9); color: white;
+            border: none; padding: 10px 20px; border-radius: 25px;
+            cursor: pointer; font-weight: bold; transition: all 0.3s ease;
+        }
+        .solution-toggle:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .solution {
+            display: none; margin-top: 15px; padding: 15px;
+            background: linear-gradient(135deg, #55efc4, #81ecec);
+            border-radius: 10px; border-left: 4px solid #00b894;
+        }
+        .solution.show { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 500px; } }
+        .solution strong { color: #006266; }
+        .interval-notation {
+            font-family: 'Courier New', monospace; background: #ffeaa7;
+            padding: 2px 8px; border-radius: 3px; font-weight: bold;
+        }
+        .footer { text-align: center; padding: 30px; color: #636e72; font-size: 0.9em; }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8em; }
+            .section { padding: 20px; }
+            .nav-button { padding: 12px 18px; font-size: 0.9em; }
+        }
+        .highlight { background: linear-gradient(120deg, #ffeaa7 0%, #ffeaa7 100%); background-repeat: no-repeat; background-size: 100% 40%; background-position: 0 88%; padding: 2px 5px; }
+        .math-expression { font-family: 'Times New Roman', serif; font-style: italic; background: #f0f0f0; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1> Matemática General</h1>
+            <p>Inecuaciones • Valor Absoluto • Ecuaciones Racionales • Conjuntos Numéricos</p>
+        </header>
+
+        <nav class="nav-menu">
+            <button class="nav-button" onclick="showSection('inecuaciones')">Inecuaciones</button>
+            <button class="nav-button" onclick="showSection('valor-absoluto')">Valor Absoluto</button>
+            <button class="nav-button" onclick="showSection('racionales')">Ecuaciones Racionales</button>
+            <button class="nav-button" onclick="showSection('conjuntos')">Conjuntos Numéricos</button>
+            <button class="nav-button" onclick="showSection('ecuaciones')">Ecuaciones</button>
+        </nav>
+
+        <!-- SECCIÓN INECUACIONES -->
+        <section id="inecuaciones" class="section active">
+            <h2>Inecuaciones</h2>
+            
+            <div class="subsection">
+                <h3>Conceptos Básicos e Intervalos</h3>
+                <div class="theory-box">
+                    <p><strong>Definición:</strong> Las inecuaciones son expresiones matemáticas que establecen relaciones de desigualdad entre dos cantidades o expresiones algebraicas.</p>
+                </div>
+                <div class="theory-box">
+                    <p><strong>Monotonía del Producto:</strong></p>
+                    <p>• Si multiplicamos por un número <span class="highlight">positivo</span>, la desigualdad mantiene el sentido.</p>
+                    <p>• Si multiplicamos por un número <span class="highlight">negativo</span>, la desigualdad <span class="highlight">cambia</span> su sentido.</p>
+                </div>
+                <div class="theory-box">
+                    <p><strong>Intervalos:</strong></p>
+                    <p>• Abierto: (a, b) = {x ∈ ℝ : a < x < b}</p>
+                    <p>• Cerrado: [a, b] = {x ∈ ℝ : a ≤ x ≤ b}</p>
+                    <p>• Infinitos: (a, +∞), (-∞, a], etc.</p>
+                </div>
+            </div>
+
+            <!-- NUEVA SECCIÓN: INECUACIONES CUADRÁTICAS -->
+            <div class="subsection">
+                <h3>Inecuaciones Cuadráticas</h3>
+                <div class="property-box">
+                    <p><strong>Propiedad del Producto (Clave para resolver):</strong></p>
+                    <p>• a · b > 0 ⟺ (a > 0 y b > 0) ó (a < 0 y b < 0)</p>
+                    <p>• a · b < 0  (a > 0 y b < 0) ó (a < 0 y b > 0)</p>
+                    <p>• a · b ≥ 0 ⟺ (a ≥ 0 y b ≥ 0) ó (a ≤ 0 y b ≤ 0)</p>
+                    <p><em>Para que un producto sea positivo, los factores deben tener el mismo signo. Para que sea negativo, deben tener signos opuestos.</em></p>
+                </div>
+            </div>
+
+            <div class="exercise-container">
+                <h3> Ejercicios - Inecuaciones Cuadráticas</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio Cuadrático 1:</strong>
+                    <div class="problem">(x - 4)(x + 3) > 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Aplicamos la propiedad a · b > 0</p>
+                        <p><em>Caso 1:</em> (x - 4 > 0 y x + 3 > 0) ⟹ (x > 4 y x > -3) ⟹ Intersección: (4, +∞)</p>
+                        <p><em>Caso 2:</em> (x - 4 < 0 y x + 3 < 0) ⟹ (x < 4 y x < -3) ⟹ Intersección: (-∞, -3)</p>
+                        <p>Unimos ambos casos:</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, -3) ∪ (4, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio Cuadrático 2:</strong>
+                    <div class="problem">x² - 5x + 6 ≥ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Primero factorizamos la ecuación cuadrática:</p>
+                        <p>x² - 5x + 6 = (x - 2)(x - 3)</p>
+                        <p>La inecuación queda: (x - 2)(x - 3) ≥ 0. Aplicamos la propiedad a · b ≥ 0</p>
+                        <p><em>Caso 1:</em> (x - 2 ≥ 0 y x - 3 ≥ 0) ⟹ (x ≥ 2 y x ≥ 3) ⟹ Intersección: [3, +∞)</p>
+                        <p><em>Caso 2:</em> (x - 2 ≤ 0 y x - 3 ≤ 0) ⟹ (x ≤ 2 y x ≤ 3) ⟹ Intersección: (-∞, 2]</p>
+                        <p>Unimos ambos casos:</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, 2] ∪ [3, +∞)</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NUEVA SECCIÓN: INECUACIONES RACIONALES -->
+            <div class="subsection">
+                <h3>Inecuaciones Racionales</h3>
+                <div class="property-box">
+                    <p><strong>Propiedad del Cociente:</strong></p>
+                    <p>• a/b > 0 ⟺ (a > 0 y b > 0) ó (a < 0 y b < 0)</p>
+                    <p>• a/b < 0 ⟺ (a > 0 y b < 0) ó (a < 0 y b > 0)</p>
+                    <p>• a/b ≥ 0 ⟺ (a ≥ 0 y b > 0) ó (a ≤ 0 y b < 0)</p>
+                    <p><strong>⚠️ Importante:</strong> Si la inecuación no tiene 0 en el lado derecho (ej: > 1), debemos restar ese número para obtener 0 antes de aplicar la propiedad. Además, el denominador <span class="highlight">nunca puede ser cero</span>.</p>
+                </div>
+            </div>
+
+            <div class="exercise-container">
+                <h3>📝 Ejercicios - Inecuaciones Racionales</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio Racional 1:</strong>
+                    <div class="problem">(x - 3) / (4 - x) > 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Aplicamos la propiedad a/b > 0</p>
+                        <p><em>Caso 1:</em> (x - 3 > 0 y 4 - x > 0) ⟹ (x > 3 y x < 4) ⟹ Intersección: (3, 4)</p>
+                        <p><em>Caso 2:</em> (x - 3 < 0 y 4 - x < 0) ⟹ (x < 3 y x > 4) ⟹ No existe x que cumpla ambas (∅)</p>
+                        <p>Unimos ambos casos:</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(3, 4)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio Racional 2:</strong>
+                    <div class="problem">(x - 3) / (4 - x) > 1</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> ¡Ojo! No podemos aplicar la propiedad directa porque hay un 1 a la derecha. Restamos 1 en ambos miembros:</p>
+                        <p>(x - 3)/(4 - x) - 1 > 0</p>
+                        <p>Común denominador: [(x - 3) - (4 - x)] / (4 - x) > 0</p>
+                        <p>(x - 3 - 4 + x) / (4 - x) > 0</p>
+                        <p>(2x - 7) / (4 - x) > 0</p>
+                        <p>Ahora sí aplicamos la propiedad a/b > 0:</p>
+                        <p><em>Caso 1:</em> (2x - 7 > 0 y 4 - x > 0) ⟹ (x > 7/2 y x < 4) ⟹ Intersección: (7/2, 4)</p>
+                        <p><em>Caso 2:</em> (2x - 7 < 0 y 4 - x < 0) ⟹ (x < 7/2 y x > 4) ⟹ No existe (∅)</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(7/2, 4)</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIOS ORIGINALES -->
+            <div class="exercise-container">
+                <h3> Ejercicios Prácticos - Inecuaciones Lineales</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio 1a:</strong>
+                    <div class="problem">x - 23 ≤ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> x ≤ 23</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, 23]</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1b:</strong>
+                    <div class="problem">2x - 1 > x + 2</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> 2x - x > 2 + 1 ⟹ x > 3</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(3, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1c:</strong>
+                    <div class="problem">3 ≤ 2x + 1 ≤ 10</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> 2 ≤ 2x ≤ 9  1 ≤ x ≤ 4.5</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">[1, 4.5]</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1d:</strong>
+                    <div class="problem">(x + 5)(x - 7) ≥ 0 y x ≥ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> (x+5)(x-7)≥0 ⟹ x≥7 ó x≤-5. Intersectando con x≥0:</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">[7, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1e:</strong>
+                    <div class="problem">(x - 6)/(x + 2) < 1</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> (x - 6)/(x + 2) - 1 < 0 ⟹ -8/(x + 2) < 0. Como -8 es negativo, necesitamos x + 2 > 0 ⟹ x > -2</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-2, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1f:</strong>
+                    <div class="problem">x³ - x² ≥ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> x²(x - 1) ≥ 0. Como x² ≥ 0 siempre, necesitamos x - 1 ≥ 0 ⟹ x ≥ 1. O x = 0.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">{0} ∪ [1, +)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1g:</strong>
+                    <div class="problem">3x - 5 ≠ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> x ≠ 5/3</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, 5/3) ∪ (5/3, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1h:</strong>
+                    <div class="problem">(x - 2)(x - 4) ≠ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> x ≠ 2 y x ≠ 4</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, 2) ∪ (2, 4) ∪ (4, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1i:</strong>
+                    <div class="problem">(x + 4)/(x - 3) ≠ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Numerador ≠ 0: x ≠ -4. Denominador ≠ 0: x ≠ 3</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, -4) ∪ (-4, 3) ∪ (3, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1j:</strong>
+                    <div class="problem">x³ < 4</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> x < ∛4</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-, ∛4)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1k:</strong>
+                    <div class="problem">(x - 3)² > 5</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> |x - 3| > √5 ⟹ x - 3 > √5 ó x - 3 < -√5</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-, 3-√5) ∪ (3+√5, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 1l:</strong>
+                    <div class="problem">√(x - 1) ≤ 12</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Condición: x - 1 ≥ 0 ⟹ x ≥ 1. Luego x - 1 ≤ 144 ⟹ x ≤ 145</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">[1, 145]</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN VALOR ABSOLUTO -->
+        <section id="valor-absoluto" class="section">
+            <h2>Valor Absoluto</h2>
+            <div class="subsection">
+                <h3>Definición y Propiedades</h3>
+                <div class="theory-box">
+                    <p><strong>Definición:</strong> |x| = { x si x ≥ 0; -x si x < 0 }. Representa la <span class="highlight">distancia</span> de un número al cero.</p>
+                </div>
+                <div class="theory-box">
+                    <p><strong>Propiedades:</strong></p>
+                    <p>1. |x| ≥ 0 | 2. |x| = 0 ⟺ x = 0 | 3. |x| = d (d > 0) ⟺ x = d ó x = -d</p>
+                    <p>4. |xy| = |x||y| | 5. |x| ≤ d ⟺ -d ≤ x ≤ d | 6. |x| ≥ d ⟺ x ≤ -d ó x ≥ d</p>
+                </div>
+            </div>
+
+            <div class="exercise-container">
+                <h3> Ejercicios Prácticos - Valor Absoluto</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio 2a:</strong>
+                    <div class="problem">|x - 2| = 3</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> x - 2 = 3 ó x - 2 = -3  x = 5 ó x = -1</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-1, 5}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2b:</strong>
+                    <div class="problem">|2x + 4| ≤ 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> El valor absoluto siempre es ≥ 0. La única posibilidad es |2x + 4| = 0 ⟹ x = -2</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-2}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2c:</strong>
+                    <div class="problem">(x + 4)² - 3 = 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> (x + 4)² = 3 ⟹ x + 4 = ±√3 ⟹ x = -4 ± 3</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-4-√3, -4+√3}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2d:</strong>
+                    <div class="problem">|3x - 1| > 9</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> 3x - 1 > 9 ó 3x - 1 < -9  3x > 10 ó 3x < -8 ⟹ x > 10/3 ó x < -8/3</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-∞, -8/3) ∪ (10/3, +∞)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2e:</strong>
+                    <div class="problem">-2|x + 3/5| ≥ -12</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> |x + 3/5| ≤ 6 (cambia el sentido al dividir por -2) ⟹ -6 ≤ x + 3/5 ≤ 6 ⟹ -33/5 ≤ x ≤ 27/5</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">[-33/5, 27/5]</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2f:</strong>
+                    <div class="problem">|x + 3| - 4 = (1/2)x - 1</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Caso 1: x + 3 ≥ 0 → x ≥ -3. x + 3 - 4 = (1/2)x - 1 ⟹ x = 0 (cumple) ✓</p>
+                        <p>Caso 2: x + 3 < 0 → x < -3. -(x + 3) - 4 = (1/2)x - 1 ⟹ x = -4 (cumple) ✓</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-4, 0}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2g:</strong>
+                    <div class="problem">|x - 4| ≥ -2</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> El valor absoluto siempre es ≥ 0, y 0 ≥ -2. Siempre es verdadera.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = ℝ = (-∞, +)</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2h:</strong>
+                    <div class="problem">2 < |x - 1| ≤ 5</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> |x - 1| > 2 ⟹ x > 3 ó x < -1. Y |x - 1| ≤ 5 ⟹ -4 ≤ x ≤ 6. Intersectando:</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">[-4, -1) ∪ (3, 6]</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2i:</strong>
+                    <div class="problem">2|x + 3| - 8 > x - 2</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong></p>
+                        <p>Caso 1: x ≥ -3. 2(x + 3) - 8 > x - 2 ⟹ x > 0. Intersección: x > 0</p>
+                        <p>Caso 2: x < -3. -2(x + 3) - 8 > x - 2 ⟹ x < -4. Intersección: x < -4</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">(-, -4) ∪ (0, +)</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN ECUACIONES RACIONALES -->
+        <section id="racionales" class="section">
+            <h2>Ecuaciones Racionales</h2>
+            <div class="subsection">
+                <h3>Conceptos Básicos</h3>
+                <div class="theory-box">
+                    <p><strong>Definición:</strong> Ecuación fraccionaria: P(x)/Q(x) = 0. Es suficiente que el numerador sea 0, <span class="highlight">descartando los valores que anulan el denominador</span> (división por cero no está definida).</p>
+                </div>
+            </div>
+
+            <div class="exercise-container">
+                <h3>📝 Ejercicios Prácticos - Ecuaciones Racionales</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio 1:</strong>
+                    <div class="problem">(x - 4)/x = 3</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Condición: x ≠ 0. x - 4 = 3x ⟹ -4 = 2x ⟹ x = -2. Verificamos: -2 ≠ 0 ✓</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-2}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2:</strong>
+                    <div class="problem">2(1 - x)/x = (x - 6)/4</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Condición: x ≠ 0. 8(1 - x) = x(x - 6)  8 - 8x = x² - 6x ⟹ x² + 2x - 8 = 0 ⟹ x₁ = 2, x₂ = -4</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-4, 2}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 3:</strong>
+                    <div class="problem">1/(2x) + 1/4 - 1/(10x) = 1/5</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Condición: x ≠ 0. mcm = 20x. [10 + 5x - 2]/(20x) = 1/5 ⟹ 5(5x + 8) = 20x ⟹ 25x + 40 = 20x  x = -8</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {-8}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 4:</strong>
+                    <div class="problem">(x - 8)/(x - 1) = (2x - 4)/(x + 2)</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Condiciones: x ≠ 1, x ≠ -2. (x - 8)(x + 2) = (2x - 4)(x - 1)  x² - 6x - 16 = 2x² - 6x + 4  x² = -20. No tiene solución en ℝ.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = ∅</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CONJUNTOS NUMÉRICOS -->
+        <section id="conjuntos" class="section">
+            <h2>Conjuntos Numéricos</h2>
+            <div class="subsection">
+                <h3>Resumen de Conjuntos</h3>
+                <div class="theory-box"><p><strong>Naturales (ℕ):</strong> {1, 2, 3...} | <strong>Enteros (ℤ):</strong> {...-2, -1, 0, 1, 2...} | <strong>Racionales (ℚ):</strong> {m/n : m,n ∈ ℤ, n≠0} | <strong>Reales (ℝ):</strong> ℚ ∪ Irracionales</p></div>
+            </div>
+
+            <div class="exercise-container">
+                <h3> Ejercicios Prácticos - Conjuntos Numéricos</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio 1:</strong>
+                    <div class="problem">¿Es posible encontrar un número natural que restado a 32 dé 38?</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> 32 - x = 38 ⟹ x = -6. Como -6 ∉ ℕ, no existe.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = ∅</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2:</strong>
+                    <div class="problem">Completar: |-105| ... |64|</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> |-105| = 105 y |64| = 64. Como 105 > 64</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">|-105| > |64|</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 3:</strong>
+                    <div class="problem">Si a es positivo, entonces |a| ... a</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Si a > 0, por definición |a| = a.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">|a| = a</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 4:</strong>
+                    <div class="problem">¿196 y 245 son múltiplos de 7?</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> 196 = 7 × 28 y 245 = 7 × 35. Sí, ambos son múltiplos. Su suma (441 = 7 × 63) también lo es.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">Sí, ambos son múltiplos de 7</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN ECUACIONES -->
+        <section id="ecuaciones" class="section">
+            <h2>Ecuaciones de Primer y Segundo Grado</h2>
+            <div class="subsection">
+                <h3>Teoría</h3>
+                <div class="theory-box">
+                    <p><strong>1er Grado:</strong> ax + b = 0 ⟹ x = -b/a</p>
+                    <p><strong>2do Grado:</strong> ax² + bx + c = 0 ⟹ x = (-b ± √(b² - 4ac))/(2a)</p>
+                    <p><strong>Discriminante (Δ):</strong> Si Δ > 0 (2 soluciones), Δ = 0 (1 solución doble), Δ < 0 (Sin solución real).</p>
+                </div>
+            </div>
+
+            <div class="exercise-container">
+                <h3>📝 Ejercicios Prácticos - Ecuaciones</h3>
+                
+                <div class="exercise-item">
+                    <strong>Ejercicio 1:</strong>
+                    <div class="problem">3(x - 2) + 1 = 2x</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> 3x - 6 + 1 = 2x ⟹ 3x - 5 = 2x ⟹ x = 5</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {5}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 2:</strong>
+                    <div class="problem">x² - 5x + 6 = 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Δ = 25 - 24 = 1. x = (5 ± 1)/2 ⟹ x₁ = 3, x₂ = 2</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = {2, 3}</span></p>
+                    </div>
+                </div>
+
+                <div class="exercise-item">
+                    <strong>Ejercicio 3:</strong>
+                    <div class="problem">x² + x + 1 = 0</div>
+                    <button class="solution-toggle" onclick="toggleSolution(this)">Ver Solución</button>
+                    <div class="solution">
+                        <p><strong>Resolución:</strong> Δ = 1 - 4 = -3 < 0. No tiene raíces reales.</p>
+                        <p><strong>Solución:</strong> <span class="interval-notation">S = ∅</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>🎓 Material educativo de Matemática General</p>
+            <p>Universidad Nacional del Comahue - Facultad de Informática</p>
+            <p>© 2026 - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) selectedSection.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleSolution(button) {
+            const solution = button.nextElementSibling;
+            solution.classList.toggle('show');
+            button.textContent = solution.classList.contains('show') ? 'Ocultar Solución' : 'Ver Solución';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('inecuaciones');
+        });
+    </script>
+</body>
+</html>
